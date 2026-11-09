@@ -1,10 +1,11 @@
 ---
 import type { Post } from '../lib/posts';
-import { postUrl, tagUrl, formatDate, readingTime } from '../lib/posts';
+import { postUrl, tagUrl, formatDate, readingStats } from '../lib/posts';
 import Icon from './Icon.astro';
 interface Props { post: Post; index?: number; }
 const { post, index = 0 } = Astro.props;
 const date = formatDate(post.data.publishedAt);
+const { minutes } = readingStats(post.body);
 ---
 <article class="post-card">
   <div class="post-side"><span class="post-number">{String(index + 1).padStart(2, '0')}</span><time datetime={post.data.publishedAt.toISOString()}>{date}</time><span class="post-kind">{post.data.kind === 'reprint' ? '转载' : '原创'}</span></div>
@@ -12,6 +13,6 @@ const date = formatDate(post.data.publishedAt);
     <div class="post-tags">{post.data.tags.map(tag => <a class="tag" href={tagUrl(tag)}><span aria-hidden="true">#</span>{tag}</a>)}</div>
     <h2><a href={postUrl(post)}>{post.data.title}<span class="post-arrow" aria-hidden="true"><Icon name="arrow" size={26} /></span></a></h2>
     <p>{post.data.description}</p>
-    <div class="post-bottom"><span>{post.data.translator ? `译者 ${post.data.translator}` : post.data.author}<span class="meta-dot">·</span>约 {readingTime(post.body)} 分钟</span><a class="read-link" href={postUrl(post)}>阅读全文 <Icon name="arrow" size={15} /></a></div>
+    <div class="post-bottom"><span>{post.data.translator ? `译者 ${post.data.translator}` : post.data.author}<span class="meta-dot">·</span>约 {minutes} 分钟</span><a class="read-link" href={postUrl(post)}>阅读全文 <Icon name="arrow" size={15} /></a></div>
   </div>
 </article>
