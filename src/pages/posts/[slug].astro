@@ -1,0 +1,31 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { getPosts, formatDate, readingTime, tagUrl, type Post } from '../../lib/posts';
+export async function getStaticPaths() {
+  return (await getPosts()).map(post => ({ params: { slug: post.id }, props: { post } }));
+}
+interface Props { post: Post; }
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const toc = headings.filter(h => h.depth === 2 || h.depth === 3);
+---
+<BaseLayout title={post.data.title} description={post.data.description} active="home" article={{ author: post.data.author, publishedAt: post.data.publishedAt, updatedAt: post.data.updatedAt }}>
+  <div class="reading-progress" data-reading-progress aria-hidden="true"></div>
+  <header class="post-header">
+    <a href="/" class="back-link"><Icon name="arrow" size={15} /> 所有文章</a>
+    <div class="post-tags">{post.data.tags.map(tag => <a href={tagUrl(tag)} class="tag"><span aria-hidden="true">#</span>{tag}</a>)}</div>
+    <h1>{post.data.title}</h1>
+    <div class="article-meta"><span>{post.data.kind === 'reprint' ? '转载' : '原创'}</span><time datetime={post.data.publishedAt.toISOString()}>发布于 {formatDate(post.data.publishedAt)}</time><span>约 {readingTime(post.body)} 分钟</span>{post.data.updatedAt && <time datetime={post.data.updatedAt.toISOString()}>更新于 {formatDate(post.data.updatedAt)}</time>}</div>
+    {post.data.kind === 'reprint' && <div class="source-notice"><p><strong>原作者 {post.data.author}</strong>{post.data.translator && <> · 中文译者 {post.data.translator}</>}</p><p>本文经授权转载自 <a href={post.data.sourceUrl} target="_blank" rel="noopener noreferrer">{post.data.sourceName} <Icon name="external" size={12} /><span class="sr-only">（新窗口）</span></a>{post.data.originalPublishedAt && <>，原文发布于 {formatDate(post.data.originalPublishedAt)}</>}。{post.data.originalUrl && <> <a href={post.data.originalUrl} target="_blank" rel="noopener noreferrer">英文原文<span class="sr-only">（新窗口）</span></a></>}</p></div>}
+  </header>
+  {toc.length > 0 && <details class="mobile-toc"><summary>本文目录 <Icon name="chevron" size={16} /></summary><ol>{toc.filter(h => h.depth === 2).map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></details>}
+  <div class="reading-layout">
+    <div>
+      <article class="prose" data-article><Content /></article>
+      <div class="article-end"><div><span class="end-mark">Fin.</span><p>感谢阅读。</p></div><a href="/archive/">继续逛逛归档 <Icon name="arrow" size={15} /></a></div>
+    </div>
+    {toc.length > 0 && <aside class="toc" aria-label="本文目录"><h2 class="toc-title">本文目录</h2><nav><ol>{toc.map(h => <li class={`depth-${h.depth}`}><a data-toc-link href={`#${h.slug}`}>{h.text}</a></li>)}</ol></nav><div class="toc-footer"><span data-reading-percent>0</span>% 已读</div></aside>}
+  </div>
+</BaseLayout>

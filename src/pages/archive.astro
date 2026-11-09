@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { getPosts, formatDate, postUrl, tagUrl } from '../lib/posts';
+const posts = await getPosts();
+const years = [...new Set(posts.map(post => post.data.publishedAt.getUTCFullYear()))];
+const tags = [...new Set(posts.flatMap(post => post.data.tags))];
+---
+<BaseLayout title="归档" active="archive">
+  <header class="page-intro"><div class="eyebrow">THE ARCHIVE</div><h1 class="page-title">写过的，都在这里。</h1><p class="page-lead">共 {posts.length} 篇文章，按时间慢慢翻。</p></header>
+  <div class="archive-tags" aria-label="文章标签">{tags.map(tag => <a href={tagUrl(tag)} class="tag"># {tag}<span>{posts.filter(post => post.data.tags.includes(tag)).length}</span></a>)}</div>
+  {years.map(year => <section class="archive-year"><h2>{year}<span>{posts.filter(post => post.data.publishedAt.getUTCFullYear() === year).length} 篇</span></h2><ol>{posts.filter(post => post.data.publishedAt.getUTCFullYear() === year).map(post => <li><time datetime={post.data.publishedAt.toISOString()}>{formatDate(post.data.publishedAt).slice(5)}</time><a href={postUrl(post)}>{post.data.title}</a><span class="archive-kind">{post.data.kind === 'reprint' ? '转载' : '原创'}</span><Icon name="arrow" size={17} /></li>)}</ol></section>)}
+</BaseLayout>
+<style>
+  .archive-tags { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 42px; }
+  .archive-tags a { border: 1px solid var(--line); padding: 5px 12px; border-radius: 4px; gap: 15px; }
+  .archive-year { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 35px; border-top: 1px solid var(--line); padding: 30px 0; }
+  .archive-year h2 { font: 400 32px var(--font-heading); }
+  .archive-year h2 span { display: block; font: 11px var(--font-body); color: var(--muted); margin-top: 10px; }
+  ol { list-style: none; margin: 0; padding: 0; }
+  li { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto auto; gap: 20px; align-items: baseline; padding: 10px 0 22px; }
+  time { font: 12px var(--font-mono); color: var(--muted); }
+  li a { font-size: 17px; line-height: 1.8; }
+  li a:hover { color: var(--accent); }
+  .archive-kind { font-size: 11px; color: var(--muted); }
+  li :global(svg) { color: var(--accent); }
+  @media (max-width: 640px) { .archive-year { grid-template-columns: 1fr; gap: 15px; } .archive-year h2 { display: flex; align-items: baseline; gap: 15px; font-size: 28px; } li { grid-template-columns: 40px minmax(0,1fr); gap: 12px; } li a { font-size: 16px; } .archive-kind, li :global(svg) { display: none; } }
+</style>

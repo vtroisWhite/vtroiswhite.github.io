@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+---
+<BaseLayout title="页面未找到" noindex>
+  <section class="page-intro"><div class="eyebrow">404 / NOT FOUND</div><h1 class="page-title">这一页，走丢了。</h1><p class="page-lead">可能是链接有误，或文章已经搬家。</p><a href="/" class="return-link">回到首页 <Icon name="arrow" size={18} /></a></section>
+</BaseLayout>
+<style>.return-link { display: inline-flex; gap: 12px; align-items: center; color: var(--accent); border-bottom: 1px solid var(--accent); margin-top: 30px; padding-bottom: 5px; }</style>

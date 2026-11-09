@@ -1,0 +1,20 @@
+---
+import Icon from './Icon.astro';
+---
+<details class="appearance" data-appearance>
+  <summary aria-label="设置界面样式和明暗模式"><Icon name="palette" size={18} /><span>外观</span><Icon name="chevron" size={14} /></summary>
+  <div class="appearance-panel">
+    <div class="control-heading">界面样式</div>
+    <div class="style-options" role="group" aria-label="界面样式">
+      <button type="button" class="style-option" data-style-choice="developer" aria-pressed="true"><span class="style-swatch swatch-developer" aria-hidden="true">~/</span><span><strong>开发者手记</strong><small>简洁、利落、有条理</small></span><span class="choice-check"><Icon name="check" size={17} /></span></button>
+      <button type="button" class="style-option" data-style-choice="paper" aria-pressed="false"><span class="style-swatch swatch-paper" aria-hidden="true">Aa</span><span><strong>纸感随笔</strong><small>柔和、舒展、慢慢读</small></span><span class="choice-check"><Icon name="check" size={17} /></span></button>
+    </div>
+    <div class="control-heading">明暗模式</div>
+    <div class="mode-options" role="group" aria-label="明暗模式">
+      <button type="button" data-mode-choice="light" aria-pressed="false"><Icon name="sun" size={17} /><span>浅色</span></button>
+      <button type="button" data-mode-choice="dark" aria-pressed="false"><Icon name="moon" size={17} /><span>深色</span></button>
+      <button type="button" data-mode-choice="system" aria-pressed="true"><Icon name="monitor" size={17} /><span>系统</span></button>
+    </div>
+    <p class="appearance-note" data-preference-note>为这个浏览器记住你的选择。</p>
+  </div>
+</details>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vtroiswhite.github.io/sitemap-index.xml

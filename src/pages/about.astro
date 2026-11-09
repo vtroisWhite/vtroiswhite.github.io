@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+---
+<BaseLayout title="关于" active="about">
+  <header class="page-intro"><div class="eyebrow">HELLO, WORLD.</div><h1 class="page-title">我是 vtroiswhite。</h1><p class="page-lead">我的个人博客。</p></header>
+  <div class="about-links"><a href="https://github.com/vtroisWhite" target="_blank" rel="noopener noreferrer"><Icon name="github" /> GitHub <Icon name="external" size={15} /><span class="sr-only">（新窗口）</span></a><a href="/rss.xml"><Icon name="rss" /> 通过 RSS 订阅 <Icon name="arrow" size={15} /></a></div>
+</BaseLayout>
+<style>.about-links { display: flex; flex-wrap: wrap; gap: 16px; } .about-links a { border: 1px solid var(--line); background: var(--surface); display: flex; align-items: center; gap: 12px; padding: 15px 20px; font-size: 14px; } .about-links a:hover { color: var(--accent); border-color: var(--accent); }</style>
