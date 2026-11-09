@@ -1,7 +1,8 @@
 ---
-title: "智能体的长期记忆"
+title: "AI 智能体的记忆如何工作？详解记忆的分层结构"
 description: "从上下文窗口、短期记忆、长期记忆和外部知识四层出发，了解 AI 智能体怎样跨会话读取、写入、更新和遗忘信息。"
 publishedAt: "2026-11-09"
+readingOrder: 52
 originalPublishedAt: "2026-04-28"
 tags: ["AI", "LLM", "AI 智能体", "记忆", "转载", "翻译"]
 kind: "reprint"
@@ -14,7 +15,7 @@ draft: false
 
 ![Outcome School 的 AI 智能体记忆文章封面](/images/posts/ai-agent-memory.png)
 
-你今天告诉智能体自己习惯用 Go，下周请它写一个函数时，它仍能用 Go 作答。这段偏好由智能体保存，等到有用时再放回模型的上下文。本文从长期记忆出发，介绍它和短期状态、上下文窗口、外部知识怎样配合。
+你今天告诉智能体自己习惯用 Go，下周请它写一个函数时，它仍能用 Go 作答。这条偏好由智能体保存，需要时再放回模型的上下文。本文介绍上下文窗口、短期记忆、长期记忆和外部知识怎样配合，以及智能体怎样读取、写入、更新和遗忘信息。
 
 ## 先看全貌
 
@@ -27,7 +28,7 @@ draft: false
 - **接续对话。** 下一轮回答需要知道上一轮说了什么。
 - **保留偏好。** 用户惯用的编程语言、回复长度和时区等信息，可以按需提供给模型。
 - **复用经验。** 记录尝试过的做法和结果，后续任务可以参考这些记录，减少重复试错。
-- **延续长任务。** 保存计划、当前步骤和中间结果，智能体才能在多次调用之间继续工作。如何让这套循环持续推进，是[循环工程](https://outcomeschool.com/blog/what-is-loop-engineering)的一部分。
+- **延续长任务。** 保存计划、当前步骤和中间结果，智能体才能在多次调用之间继续工作。如何让这套循环持续推进，是[循环工程](/posts/what-is-loop-engineering/)的一部分。
 
 ## 记忆的四个层次
 
@@ -42,7 +43,7 @@ draft: false
 
 **短期记忆**像一本本次任务的工作笔记。它由应用在调用之间维护，可以在下一轮放回[上下文窗口](https://outcomeschool.com/blog/context-window)。有些框架把上下文窗口也称为短期记忆。这里把模型眼前的输入与应用保存的会话状态分成两层。
 
-**长期记忆**跨任务和会话保留信息。按用途还可以区分为情景记忆（以往经历）、语义记忆（事实与概念）和程序性记忆（做事的方法）。想看产品中的例子，可以参考[ChatGPT 怎样记住你](https://outcomeschool.com/blog/how-does-chatgpt-remember-you)。
+**长期记忆**跨任务和会话保留信息。按用途还可以区分为情景记忆（以往经历）、语义记忆（事实与概念）和程序性记忆（做事的方法）。想看产品中的例子，可以参考[ChatGPT 怎样记住你](/posts/how-does-chatgpt-remember-you/)。
 
 **外部知识**由其他系统维护。即使文档和数据库属于同一家公司，智能体查询它们时，也是在读取共享知识。不同框架对这一层的归类有所不同，有些将它归入广义的长期记忆。
 
@@ -71,7 +72,7 @@ draft: false
 返回回答
 ```
 
-长期记忆按当前用户和任务检索，短期记忆则提供本会话里的计划和中间结果。模型需要其他资料时，智能体还可以通过[检索增强生成（RAG）](https://outcomeschool.com/blog/retrieval-augmented-generation-rag)查文档，或者调用数据库等工具，并在[智能体循环](https://outcomeschool.com/blog/ai-agent-loop)中继续处理结果。流程可以写成下面的伪代码。
+长期记忆按当前用户和任务检索，短期记忆则提供本会话里的计划和中间结果。模型需要其他资料时，智能体还可以通过[检索增强生成（RAG）](/posts/retrieval-augmented-generation-rag/)查文档，或者调用数据库等工具，并在[智能体循环](/posts/ai-agent-loop/)中继续处理结果。流程可以写成下面的伪代码。
 
 ```python
 while user_active:
@@ -103,20 +104,20 @@ while user_active:
 
 逐条聊天记录、问候语和短期任务进度通常留在当前会话即可。涉及敏感信息时，需要先确认用户同意保存。判断一条信息是否值得写入，可以问自己，下次对话还会用到它吗？
 
-表的业务含义、销售数据的统计口径等公司知识适合维护在共享文档里，供不同智能体和工具查询。[开放知识格式（OKF）](https://outcomeschool.com/blog/what-is-okf-open-knowledge-format)提供了一种组织这类信息的方式。
+表的业务含义、销售数据的统计口径等公司知识适合维护在共享文档里，供不同智能体和工具查询。[开放知识格式（OKF）](/posts/what-is-okf-open-knowledge-format/)提供了一种组织这类信息的方式。
 
 ## 常见问题和处理办法
 
 | 问题 | 处理办法 |
 | --- | --- |
 | 上下文超长，早期信息被截断 | [压缩旧对话](https://outcomeschool.com/blog/how-does-context-compaction-work)，清理无用的工具输出，只载入本轮相关的记忆。 |
-| 有记录却检索不到 | 为条目写清标题和描述，使用[语义检索](https://outcomeschool.com/blog/how-does-semantic-search-work)，先取候选再筛选。数据量大时可以用[近似最近邻（ANN）检索](https://outcomeschool.com/blog/how-does-approximate-nearest-neighbor-ann-search-work)快速找到相似向量。 |
+| 有记录却检索不到 | 为条目写清标题和描述，使用[语义检索](/posts/how-does-semantic-search-work/)，先取候选再筛选。数据量大时可以用[近似最近邻（ANN）检索](https://outcomeschool.com/blog/how-does-approximate-nearest-neighbor-ann-search-work)快速找到相似向量。 |
 | 智能体继续使用过时信息 | 写入时检查冲突，发现变化就更新对应记录。 |
 | 记忆越积越多 | 制定清理策略，删除失效、长期未使用或已被新信息取代的条目。 |
 | 向其他用户泄露记忆 | 按用户标识隔离并授权访问。保存敏感信息需经同意，并对存储和传输加密。 |
 | 把临时状态当作长期事实 | 根据有效期选择存储层。有疑问时先放短期记忆，确认有复用价值后再转存。 |
 
-这些故障有时只表现为回答悄悄出错。日志、[智能体可观测性](https://outcomeschool.com/blog/ai-agent-observability)和定期审计可以帮助定位问题。还要留意记忆投毒。攻击者如果能让恶意指令写入长期记忆，这些内容就可能在后续会话中被反复取回。[大语言模型中的提示词注入](/posts/prompt-injection-in-llms/)
+这些故障有时只表现为回答悄悄出错。日志、[智能体可观测性](/posts/ai-agent-observability/)和定期审计可以帮助定位问题。还要留意记忆投毒。攻击者如果能让恶意指令写入长期记忆，这些内容就可能在后续会话中被反复取回。[大语言模型中的提示词注入](/posts/prompt-injection-in-llms/)
 
 ## 小结
 

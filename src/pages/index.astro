@@ -11,7 +11,7 @@ const posts = await getPosts();
     <div class="hero-art" aria-hidden="true"><div class="art-top"><span>NOTES & THOUGHTS</span><span>↗</span></div><div class="art-number">{String(posts.length).padStart(2, '0')}<span>篇</span></div><div class="art-bottom"><span>每一次记录<br />都是新的开始。</span><span class="art-star">✳</span></div></div>
   </section>
   <section id="articles" class="article-list" aria-labelledby="articles-title">
-    <div class="section-heading"><h2 id="articles-title"><span class="section-slash" aria-hidden="true">/</span>最近的文章</h2><span class="article-count">{String(posts.length).padStart(2, '0')} ENTRIES</span></div>
+    <div class="section-heading"><h2 id="articles-title"><span class="section-slash" aria-hidden="true">/</span>文章列表</h2><span class="article-count">{String(posts.length).padStart(2, '0')} ENTRIES</span></div>
     {posts.length ? posts.map((post, index) => <PostCard post={post} index={index} />) : <p class="empty-state">第一篇文章，正在路上。</p>}
     <div class="list-end"><span>文字不多，来日方长。</span><a href="/archive/">查看归档 <Icon name="arrow" size={16} /></a></div>
   </section>

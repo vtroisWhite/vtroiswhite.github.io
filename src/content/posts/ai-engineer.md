@@ -2,6 +2,7 @@
 title: "什么是 AI 工程师？他们具体做什么？"
 description: "以客服助手为例，了解 AI 工程师如何接入模型、构建检索和智能体、评估回答，并把产品部署到生产环境。"
 publishedAt: "2026-11-09"
+readingOrder: 12
 originalPublishedAt: "2026-11-01"
 tags: ["AI", "AI 工程", "转载", "翻译"]
 kind: "reprint"

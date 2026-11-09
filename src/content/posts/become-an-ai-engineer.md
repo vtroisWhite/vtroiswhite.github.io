@@ -2,6 +2,7 @@
 title: "如何成为 AI 工程师？"
 description: "从调用模型 API 到上线和评估，梳理 AI 工程师的七步学习路线，以及三个可以放进作品集的实战项目。"
 publishedAt: "2026-11-09"
+readingOrder: 13
 originalPublishedAt: "2026-11-02"
 tags: ["AI", "LLM", "AI 工程", "转载", "翻译"]
 kind: "reprint"

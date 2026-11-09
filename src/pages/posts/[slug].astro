@@ -19,7 +19,16 @@ const { wordCount, minutes } = readingStats(post.body);
     <div class="post-tags">{post.data.tags.map(tag => <a href={tagUrl(tag)} class="tag"><span aria-hidden="true">#</span>{tag}</a>)}</div>
     <h1>{post.data.title}</h1>
     <div class="article-meta"><span>{post.data.kind === 'reprint' ? '转载' : '原创'}</span><time datetime={post.data.publishedAt.toISOString()}>发布于 {formatDate(post.data.publishedAt)}</time><span>共 {wordCount} 字，预计阅读时间约 {minutes} 分钟</span>{post.data.updatedAt && <time datetime={post.data.updatedAt.toISOString()}>更新于 {formatDate(post.data.updatedAt)}</time>}</div>
-    {post.data.kind === 'reprint' && <div class="source-notice"><p><strong>原作者 {post.data.author}</strong>{post.data.translator && <> · 中文译者 {post.data.translator}</>}</p><p>本文经授权转载自 <a href={post.data.sourceUrl} target="_blank" rel="noopener noreferrer">{post.data.sourceName} <Icon name="external" size={12} /><span class="sr-only">（新窗口）</span></a>{post.data.originalPublishedAt && <>，原文发布于 {formatDate(post.data.originalPublishedAt)}</>}。{post.data.originalUrl && <> <a href={post.data.originalUrl} target="_blank" rel="noopener noreferrer">英文原文<span class="sr-only">（新窗口）</span></a></>}</p></div>}
+    {post.data.kind === 'reprint' && (
+      <div class="source-notice">
+        <p><strong>原作者 {post.data.author}</strong>{post.data.translator && <> · 中文译者 {post.data.translator}</>}</p>
+        <p>
+          本文经授权转载自 <a href={post.data.sourceUrl} target="_blank" rel="noopener noreferrer">{post.data.sourceName} <Icon name="external" size={12} /><span class="sr-only">（新窗口）</span></a>
+          {post.data.originalUrl && <>。<a href={post.data.originalUrl} target="_blank" rel="noopener noreferrer">英文原文<span class="sr-only">（新窗口）</span></a></>}
+          {post.data.originalPublishedAt && <>{post.data.originalUrl ? '发布于' : '，原文发布于'} {formatDate(post.data.originalPublishedAt)}</>}。
+        </p>
+      </div>
+    )}
   </header>
   {toc.length > 0 && <details class="mobile-toc"><summary>本文目录 <Icon name="chevron" size={16} /></summary><ol>{toc.filter(h => h.depth === 2).map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></details>}
   <div class="reading-layout">

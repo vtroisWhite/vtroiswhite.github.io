@@ -2,7 +2,12 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'posts'>;
 export const getPosts = async () => (await getCollection('posts', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+  .sort((a, b) => {
+    const orderA = a.data.readingOrder ?? Infinity;
+    const orderB = b.data.readingOrder ?? Infinity;
+    if (orderA !== orderB) return orderA - orderB;
+    return b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf();
+  });
 export const postUrl = (post: Post) => `/posts/${post.id}/`;
 export const tagUrl = (tag: string) => `/tags/${encodeURIComponent(tag)}/`;
 export const formatDate = (date: Date) => new Intl.DateTimeFormat('zh-CN', {

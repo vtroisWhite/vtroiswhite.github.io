@@ -1,5 +1,5 @@
 ---
-title: "解构 Transformer 架构"
+title: "Transformer 架构是如何工作的？"
 description: "用英译法示例串起 Transformer 的完整流程，逐步理解词元、位置编码、注意力、前馈网络，以及编码器和解码器的分工。"
 publishedAt: "2026-11-09"
 originalPublishedAt: "2026-04-07"
@@ -37,8 +37,8 @@ Transformer 用注意力让序列中相隔很远的词元直接交换信息，�
 
 原始 Transformer 由两部分组成。
 
-- **编码器（Encoder）**读取输入，为每个位置生成结合上下文的表示。
-- **解码器（Decoder）**利用这些表示和已有的输出，逐步生成结果。
+- **编码器（Encoder）** 读取输入，为每个位置生成结合上下文的表示。
+- **解码器（Decoder）** 利用这些表示和已有的输出，逐步生成结果。
 
 可以把两者想成读者和作者。读者通读材料并整理笔记，作者参考笔记写出新的文本。[编码器与解码器的区别](https://outcomeschool.com/blog/encoder-vs-decoder-in-transformers)
 
@@ -46,9 +46,9 @@ Transformer 用注意力让序列中相隔很远的词元直接交换信息，�
 
 模型接收的是数值。文本进入 Transformer 之前，先经过两个步骤。
 
-**词元化（Tokenization）**将文本切成词元。一个词元可以是一个词、词的一部分，也可以是一个字符。为了便于说明，下面把 `I love learning` 简化成 `I`、`love`、`learning` 三个词元。[大语言模型的词元化](https://outcomeschool.com/blog/tokenization-in-llms) · [词元化视频](https://www.youtube.com/watch?v=sK2s9I84EVI)
+**词元化（Tokenization）** 将文本切成词元。一个词元可以是一个词、词的一部分，也可以是一个字符。为了便于说明，下面把 `I love learning` 简化成 `I`、`love`、`learning` 三个词元。[大语言模型的词元化](https://outcomeschool.com/blog/tokenization-in-llms) · [词元化视频](https://www.youtube.com/watch?v=sK2s9I84EVI)
 
-**嵌入（Embedding）**将词元映射为数值向量。可以把向量看成词元的数字指纹。例如，`happy` 和 `joyful` 含义接近，它们的向量可能也比较接近。`happy` 和 `car` 的向量则可能相差较远。[嵌入视频](https://www.youtube.com/watch?v=LedXW6xl21s)
+**嵌入（Embedding）** 将词元映射为数值向量。可以把向量看成词元的数字指纹。例如，`happy` 和 `joyful` 含义接近，它们的向量可能也比较接近。`happy` 和 `car` 的向量则可能相差较远。[嵌入视频](https://www.youtube.com/watch?v=LedXW6xl21s)
 
 ## 第二步　加入位置信息
 
@@ -64,9 +64,9 @@ Transformer 用注意力让序列中相隔很远的词元直接交换信息，�
 
 每个词元的当前表示会被投影为三个向量。[Q、K、V 的计算过程](https://outcomeschool.com/blog/math-behind-attention-qkv)
 
-- **查询（Query，Q）**表示当前位置在找什么。
-- **键（Key，K）**用于衡量一个位置与查询的匹配程度。
-- **值（Value，V）**携带一个位置可供汇集的信息。
+- **查询（Query，Q）** 表示当前位置在找什么。
+- **键（Key，K）** 用于衡量一个位置与查询的匹配程度。
+- **值（Value，V）** 携带一个位置可供汇集的信息。
 
 计算某个位置的注意力时，先用它的 Q 与可见位置的 K 做点积，得到匹配分数。然后将分数除以键向量维度的平方根 `√dₖ`，以免点积随维度增大而过大。接着用 softmax 把分数转成总和为 1 的权重，最后按这些权重对各位置的 V 求加权和。[缩放点积注意力](https://outcomeschool.com/blog/scaling-dot-product-attention) · [softmax 函数](https://outcomeschool.com/blog/softmax-function)
 
@@ -98,8 +98,8 @@ Transformer 用注意力让序列中相隔很远的词元直接交换信息，�
 
 原始 Transformer 在注意力和前馈等子层中都使用了残差连接和层归一化。
 
-- **残差连接（Residual Connection）**将子层的输入加回子层输出，可写成 `子层输出 = 子层变换(输入) + 输入`。就像上课记笔记时，把新内容补到已有笔记里，原来的信息仍有路径向后传递。
-- **层归一化（Layer Normalization）**在原始架构中对相加后的表示做归一化，帮助维持数值和训练过程的稳定。[层归一化与批归一化的区别](https://outcomeschool.com/blog/batch-normalization-vs-layer-normalization)
+- **残差连接（Residual Connection）** 将子层的输入加回子层输出，可写成 `子层输出 = 子层变换(输入) + 输入`。就像上课记笔记时，把新内容补到已有笔记里，原来的信息仍有路径向后传递。
+- **层归一化（Layer Normalization）** 在原始架构中对相加后的表示做归一化，帮助维持数值和训练过程的稳定。[层归一化与批归一化的区别](https://outcomeschool.com/blog/batch-normalization-vs-layer-normalization)
 
 ## 第六步　堆叠多层 Transformer 块
 

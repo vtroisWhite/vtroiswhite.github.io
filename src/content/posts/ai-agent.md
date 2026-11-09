@@ -1,7 +1,8 @@
 ---
-title: "AI 智能体"
+title: "什么是 AI 智能体？它是如何工作的？"
 description: "从模型、指令、工具、记忆和运行循环五个部分理解 AI 智能体，用研究助手示例看看它如何完成任务，以及何时值得使用。"
 publishedAt: "2026-11-09"
+readingOrder: 41
 originalPublishedAt: "2026-04-27"
 tags: ["AI", "LLM", "AI 智能体", "转载", "翻译"]
 kind: "reprint"
@@ -14,7 +15,7 @@ draft: false
 
 ![Outcome School 的 AI 智能体文章封面](/images/posts/ai-agent.png)
 
-AI 智能体接收一个目标，用[大语言模型（LLM）](https://outcomeschool.com/blog/large-language-model-llm)决定下一步，再由程序调用工具、收集结果。模型根据结果继续决策，直到任务完成或触发停止条件。这个反复决策和执行的过程，就是[智能体循环](https://outcomeschool.com/blog/ai-agent-loop)。
+AI 智能体接收一个目标，用[大语言模型（LLM）](https://outcomeschool.com/blog/large-language-model-llm)决定下一步，再由程序调用工具、收集结果。模型根据结果继续决策，直到任务完成或触发停止条件。这个反复决策和执行的过程，就是[智能体循环](/posts/ai-agent-loop/)。
 
 可以把它想成一位刚入职的同事。接到任务后，他会先弄清要求，再打开文件、发消息或查数据。每做一步，他都要检查结果，再决定接下来做什么。智能体也按这个顺序工作。
 
@@ -40,7 +41,7 @@ Memory ────────┘     ▲        │
 
 ### 2. 指令
 
-系统提示告诉模型它的职责、可以使用的工具以及要遵守的规则。任务所需的长流程可以写成独立的 [Agent Skills](https://outcomeschool.com/blog/what-are-agent-skills)，由智能体按需加载。
+系统提示告诉模型它的职责、可以使用的工具以及要遵守的规则。任务所需的长流程可以写成独立的 [Agent Skills](/posts/what-are-agent-skills/)，由智能体按需加载。
 
 ### 3. 工具
 
@@ -67,17 +68,17 @@ Memory ────────┘     ▲        │
 }
 ```
 
-名称用于标识工具，描述帮助模型判断什么时候使用，输入模式约定参数的结构。多个工具用途相近时，描述越明确，模型越容易选对。通过 [MCP（模型上下文协议）](https://outcomeschool.com/blog/what-is-mcp-model-context-protocol)，智能体连接服务器后还可以发现服务器提供的工具及其定义。
+名称用于标识工具，描述帮助模型判断什么时候使用，输入模式约定参数的结构。多个工具用途相近时，描述越明确，模型越容易选对。通过 [MCP（模型上下文协议）](/posts/what-is-mcp-model-context-protocol/)，智能体连接服务器后还可以发现服务器提供的工具及其定义。
 
 ### 4. 记忆
 
-[记忆](/posts/ai-agent-memory/)帮助智能体记录进度，避免重复工作。短期记忆是当前任务的状态，包括对话、[工具调用](https://outcomeschool.com/blog/how-does-function-calling-work-in-llms)和执行结果。模型每次调用都要收到完成当前步骤所需的历史，任务过长时可以压缩较早的内容。
+[记忆](/posts/ai-agent-memory/)帮助智能体记录进度，避免重复工作。短期记忆是当前任务的状态，包括对话、[工具调用](/posts/how-does-function-calling-work-in-llms/)和执行结果。模型每次调用都要收到完成当前步骤所需的历史，任务过长时可以压缩较早的内容。
 
-长期记忆保存跨任务有用的信息，例如用户偏好、之前的决定和已知事实。系统可以把这些信息存入用户档案或[向量数据库](https://outcomeschool.com/blog/how-does-a-vector-database-work)，在后续任务需要时取出。
+长期记忆保存跨任务有用的信息，例如用户偏好、之前的决定和已知事实。系统可以把这些信息存入用户档案或[向量数据库](/posts/how-does-a-vector-database-work/)，在后续任务需要时取出。
 
 ### 5. 运行循环
 
-循环负责向模型发送消息，执行它请求的工具调用，再把工具结果交回模型。模型可以据此继续调用工具或返回最终答复。步数预算、检查和退出条件也由运行程序管理。[循环工程](https://outcomeschool.com/blog/what-is-loop-engineering)
+循环负责向模型发送消息，执行它请求的工具调用，再把工具结果交回模型。模型可以据此继续调用工具或返回最终答复。步数预算、检查和退出条件也由运行程序管理。[循环工程](/posts/what-is-loop-engineering/)
 
 ## 一次任务如何完成
 
@@ -134,11 +135,11 @@ async def run_agent(user_goal, tools, max_steps=10):
 
 ## 常见的智能体模式
 
-- **[ReAct 智能体](https://outcomeschool.com/blog/react-agent)**交替决策、行动和观察，根据每一步的结果调整下一步。
-- **[计划与执行智能体](https://outcomeschool.com/blog/plan-and-execute-agent)**先列出计划，再逐步执行，适合步骤较多的任务。
-- **[反思智能体](https://outcomeschool.com/blog/reflection-agent)**先生成草稿，再检查和修订，适合有余量反复打磨的任务。
-- **[Agentic RAG](/posts/agentic-rag/)**让智能体决定何时检索、查哪里，以及是否需要补充资料。
-- **[多智能体系统](https://outcomeschool.com/blog/multi-agent-systems)**让多个智能体分工，例如分别负责查资料、起草和审核。
+- **[ReAct 智能体](/posts/react-agent/)** 交替决策、行动和观察，根据每一步的结果调整下一步。
+- **[计划与执行智能体](/posts/plan-and-execute-agent/)** 先列出计划，再逐步执行，适合步骤较多的任务。
+- **[反思智能体](/posts/reflection-agent/)** 先生成草稿，再检查和修订，适合有余量反复打磨的任务。
+- **[Agentic RAG](/posts/agentic-rag/)** 让智能体决定何时检索、查哪里，以及是否需要补充资料。
+- **[多智能体系统](/posts/multi-agent-systems/)** 让多个智能体分工，例如分别负责查资料、起草和审核。
 
 这些模式可以组合。比如，一个 ReAct 智能体用 Agentic RAG 查资料，最后加一步反思，检查答复是否完整。
 
@@ -149,8 +150,8 @@ async def run_agent(user_goal, tools, max_steps=10):
 | 编程 | 阅读代码库、修改代码、运行测试、提交拉取请求。原文列举了 [Claude Code](https://outcomeschool.com/blog/how-does-claude-code-work)、[Cursor](https://outcomeschool.com/blog/how-does-cursor-work) 和 GitHub Copilot 的智能体模式。 |
 | 研究 | 搜索网页、阅读论文、综合证据，整理成结构化报告。 |
 | 客服 | 读取工单、查询账户与订单、给出处理方案，必要时转人工。 |
-| 浏览器操作 | [浏览器智能体](https://outcomeschool.com/blog/how-do-browser-agents-work)可以导航、填写表单、完成预订等任务。与之相关的[计算机操作智能体](https://outcomeschool.com/blog/how-do-computer-use-agents-work)通过桌面界面完成工作。 |
-| 数据分析 | 查询数据库、计算、绘图并解释结果。[OKF（开放知识格式）](https://outcomeschool.com/blog/what-is-okf-open-knowledge-format)可以把表和字段的业务含义写成智能体能读取的文件。 |
+| 浏览器操作 | [浏览器智能体](/posts/how-do-browser-agents-work/)可以导航、填写表单、完成预订等任务。与之相关的[计算机操作智能体](/posts/how-do-computer-use-agents-work/)通过桌面界面完成工作。 |
+| 数据分析 | 查询数据库、计算、绘图并解释结果。[OKF（开放知识格式）](/posts/what-is-okf-open-knowledge-format/)可以把表和字段的业务含义写成智能体能读取的文件。 |
 | 个人助理 | 管理日历、读取和起草邮件、查找文件，按用户授权完成多步任务。 |
 
 ## 何时使用智能体
@@ -164,10 +165,10 @@ async def run_agent(user_goal, tools, max_steps=10):
 | 陷入循环 | 设置硬性的步数上限，防止反复调用同一个工具。 |
 | 选错工具 | 写清工具的适用条件和用途，帮助模型区分相近的工具。 |
 | 工具不存在或参数无效 | 使用模型原生的工具调用机制，并在运行程序中校验工具名称和参数。把清楚的错误信息作为观测返回，给模型修正机会。 |
-| 上下文溢出 | 历史超出[上下文窗口](https://outcomeschool.com/blog/context-window)时，可以[压缩较早的步骤](https://outcomeschool.com/blog/how-does-context-compaction-work)或移除过时的结果。保留任务目标和最近进展，减少关键信息[淹没在中间](https://outcomeschool.com/blog/lost-in-the-middle-problem-in-llms)的情况。 |
+| 上下文溢出 | 历史超出[上下文窗口](https://outcomeschool.com/blog/context-window)时，可以[压缩较早的步骤](https://outcomeschool.com/blog/how-does-context-compaction-work)或移除过时的结果。保留任务目标和最近进展，减少关键信息[淹没在中间](/posts/lost-in-the-middle-problem-in-llms/)的情况。 |
 | 提前停止 | 在指令里写清交付物和完成条件，让模型能检查还有哪些工作未完成。 |
 
-评估时可以分别检查最终结果、执行过程和工具使用情况，找出失败发生在哪一步。[AI 智能体评估](https://outcomeschool.com/blog/ai-agent-evaluation)
+评估时可以分别检查最终结果、执行过程和工具使用情况，找出失败发生在哪一步。[AI 智能体评估](/posts/ai-agent-evaluation/)
 
 ## 常见问题
 

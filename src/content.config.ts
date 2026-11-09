@@ -10,6 +10,7 @@ const posts = defineCollection({
     publishedAt: z.coerce.date(),
     updatedAt: z.coerce.date().optional(),
     originalPublishedAt: z.coerce.date().optional(),
+    readingOrder: z.number().int().positive().optional(),
     tags: z.array(z.string()).default([]),
     kind: z.enum(['original', 'reprint']).default('original'),
     author: z.string().default('vtroiswhite'),

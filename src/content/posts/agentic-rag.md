@@ -1,7 +1,8 @@
 ---
-title: "Agentic RAG"
+title: "什么是 Agentic RAG？它如何工作，何时适用？"
 description: "从一次检索到多轮搜索，用 Acme 收购案例解释 Agentic RAG 如何拆解问题、选择数据源并检查证据。"
 publishedAt: "2026-11-09"
+readingOrder: 37
 originalPublishedAt: "2026-05-01"
 tags: ["AI", "LLM", "AI 智能体", "RAG", "转载", "翻译"]
 kind: "reprint"
@@ -24,13 +25,13 @@ Agentic RAG 更像一位研究者。研究者先判断应该去哪里找，再�
 
 ## 回顾 RAG
 
-[检索增强生成（RAG）](https://outcomeschool.com/blog/retrieval-augmented-generation-rag)在回答前查找相关资料，再把资料交给模型。以一次向量检索为例，系统把用户的问题转换成[嵌入向量](https://outcomeschool.com/blog/what-are-embeddings)，在[向量数据库](https://outcomeschool.com/blog/how-does-a-vector-database-work)中找到最相关的若干[文档片段](https://outcomeschool.com/blog/chunking-strategies-for-rag)，然后把问题和片段一起交给 LLM 生成答案。
+[检索增强生成（RAG）](/posts/retrieval-augmented-generation-rag/)在回答前查找相关资料，再把资料交给模型。以一次向量检索为例，系统把用户的问题转换成[嵌入向量](/posts/what-are-embeddings/)，在[向量数据库](/posts/how-does-a-vector-database-work/)中找到最相关的若干[文档片段](/posts/chunking-strategies-for-rag/)，然后把问题和片段一起交给 LLM 生成答案。
 
 ```text
 用户提问 → 将问题向量化 → 向量检索（取前 k 个片段）→ LLM 生成答案
 ```
 
-这条固定流程也可以增加环节。例如，[HyDE](https://outcomeschool.com/blog/how-does-hyde-work)先让模型写一份假设性答案，再用它的向量去检索相关文档。[重排序模型](https://outcomeschool.com/blog/how-does-a-reranker-work)则可以在检索后重新评估候选片段的相关性，把更相关的片段排在前面。
+这条固定流程也可以增加环节。例如，[HyDE](https://outcomeschool.com/blog/how-does-hyde-work)先让模型写一份假设性答案，再用它的向量去检索相关文档。[重排序模型](/posts/how-does-a-reranker-work/)则可以在检索后重新评估候选片段的相关性，把更相关的片段排在前面。
 
 ## 回顾 AI 智能体
 
@@ -81,11 +82,11 @@ Agentic RAG 在检索流程中加入可反复执行的决策步骤。智能体�
 4. 它选择在内部财务报告中做向量检索，查询「Globex 2023 年第四季度营收」。
 5. 工具返回季度财报片段，智能体检查片段是否包含所需数字，然后依据材料回答。
 
-实际的搜索结果通常包含多条摘要，智能体需要先判断哪些结果与问题相关。同一轮也可以组合多个来源，例如用向量库查概念定义，再用网页搜索补充最新消息。检索工具可以按数据结构选用。例如，[Vectorless RAG](https://outcomeschool.com/blog/vectorless-rag)可以利用文档的目录和章节结构查找相关段落。
+实际的搜索结果通常包含多条摘要，智能体需要先判断哪些结果与问题相关。同一轮也可以组合多个来源，例如用向量库查概念定义，再用网页搜索补充最新消息。检索工具可以按数据结构选用。例如，[Vectorless RAG](/posts/vectorless-rag/)可以利用文档的目录和章节结构查找相关段落。
 
 ## 常见模式
 
-- **ReAct 式 RAG。** 智能体在[推理、行动、观察的循环](https://outcomeschool.com/blog/ai-agent-loop)中推进任务。它先确定该查什么，再执行检索，最后根据结果决定下一步。上面的 Acme 示例就采用这种思路。[ReAct 智能体](https://outcomeschool.com/blog/react-agent)
+- **ReAct 式 RAG。** 智能体在[推理、行动、观察的循环](/posts/ai-agent-loop/)中推进任务。它先确定该查什么，再执行检索，最后根据结果决定下一步。上面的 Acme 示例就采用这种思路。[ReAct 智能体](/posts/react-agent/)
 - **Self-RAG。** 模型判断是否需要检索，并检查材料是否与问题相关、生成的内容是否有依据。评估结果可以用来取舍检索片段和候选答案。
 - **Corrective RAG（CRAG）。** 系统先评估检索结果的质量。结果不理想时触发补救流程，例如改用网页搜索获取资料。
 
@@ -109,7 +110,7 @@ Agentic RAG 在检索流程中加入可反复执行的决策步骤。智能体�
 
 - 问题有多个相互依赖的步骤，后一步需要用到前一步找到的信息。
 - 数据分散在向量库、SQL 数据库、网页或文件中，需要按问题选择来源。
-- 用户的问题比较模糊，需要补足上下文或[改写查询](https://outcomeschool.com/blog/how-do-query-rewriting-and-multi-query-retrieval-work)后再检索。
+- 用户的问题比较模糊，需要补足上下文或[改写查询](/posts/how-do-query-rewriting-and-multi-query-retrieval-work/)后再检索。
 - 证据质量比响应速度更重要，例如研究和资料核查。
 - 同一个入口既要回答需要查资料的问题，也要处理问候或闲聊。
 
@@ -120,7 +121,7 @@ Agentic RAG 在检索流程中加入可反复执行的决策步骤。智能体�
 - **延迟和成本更高。** 多轮检索通常伴随多次模型调用。工具返回的数据也要进入后续上下文，增加 token 消耗。
 - **调试更难。** 同一个问题在不同运行中可能走不同路径。检查问题时，需要看到智能体选择了哪些查询、工具和来源。
 - **循环可能持续太久。** 系统可以根据模型的完成信号、证据是否充分或最大步数来结束循环。即使模型自认为有把握，也要检查材料是否支持答案。
-- **系统更复杂。** 工具接口、提示词、[评估流程](https://outcomeschool.com/blog/ai-agent-evaluation)和停止条件都需要设计与维护。
+- **系统更复杂。** 工具接口、提示词、[评估流程](/posts/ai-agent-evaluation/)和停止条件都需要设计与维护。
 
 ## 小结
 

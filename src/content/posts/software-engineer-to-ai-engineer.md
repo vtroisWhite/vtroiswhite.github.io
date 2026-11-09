@@ -2,6 +2,7 @@
 title: "软件工程师如何转型为 AI 工程师？"
 description: "从 API、系统设计和测试等已有能力出发，按顺序补齐模型调用、RAG、智能体和评估，并通过三个项目展示转型成果。"
 publishedAt: "2026-11-09"
+readingOrder: 10
 originalPublishedAt: "2026-11-03"
 tags: ["AI", "AI 工程", "职业发展", "转载", "翻译"]
 kind: "reprint"
